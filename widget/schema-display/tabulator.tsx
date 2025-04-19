@@ -17,7 +17,7 @@ const Tabulator: React.FC<TabulatorProps> = ({ tabs }) => {
 
   return (
     <div>
-      <div className="flex flex-col mt-[-20px] mb-2">
+      <div className="flex flex-col mt-[-20px] mb-2 text-var(--normal-button, rgba(115, 141, 184, 0.80)) text-2xl not-italic font-bold leading-[normal]">
         {tabs.map(tab => (
           <button
             key={tab.version_id}
