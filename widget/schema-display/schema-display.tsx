@@ -6,6 +6,7 @@ import { useState } from "react";
 import type { Monaco } from "@monaco-editor/react";
 import { defineCustomTheme } from "./define-custom-theme";
 import { PLACEHOLDER } from "./placeholder";
+import VersionTabulator from "@/widget/schema-display/tabulator";
 
 const MonacoEditor = dynamic(
   () => import("@monaco-editor/react"),
@@ -27,6 +28,7 @@ export const SchemaDisplay = () => {
 
   return (
     <div className="w-1/2">
+      <VersionTabulator />
       <div className="py-4 px-2 rounded-2xl overflow-hidden bg-[#2d3035]">
         <MonacoEditor
           height="80vh"
