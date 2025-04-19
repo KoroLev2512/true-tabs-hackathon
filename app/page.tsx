@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Loader from "@/app/loader";
+import { Input } from "@/shared/input";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -15,7 +16,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen">
+    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center h-screen">
       {isLoading
         ? (
             <div className="min-h-screen flex items-center justify-center m-auto">
@@ -23,7 +24,9 @@ export default function Home() {
             </div>
           )
         : (
-            <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center"></footer>
+            <div className="flex flex-col h-screen w-full justify-end mt-auto p-3">
+              <Input />
+            </div>
           )}
     </div>
   );
