@@ -1,7 +1,9 @@
 import stylistic from "@stylistic/eslint-plugin";
-import {dirname} from "path";
-import {fileURLToPath} from "url";
-import {FlatCompat} from "@eslint/eslintrc";
+import tseslint from "typescript-eslint";
+
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+import { FlatCompat } from "@eslint/eslintrc";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -22,6 +24,11 @@ const eslintConfig = [
       "@stylistic/semi": ["error", "always"],
     },
   },
+  ...tseslint.config({
+    rules: {
+      "@typescript-eslint/consistent-type-imports": "error",
+    },
+  }),
 ];
 
 export default eslintConfig;
