@@ -1,33 +1,17 @@
-"use client";
+import { Chat } from "@/widget/chat";
+import { SchemaDisplay } from "@/widget/schema-display";
+import type { Metadata } from "next";
+import { Separator } from "@/shared/ui/separator";
 
-import { useState, useEffect } from "react";
-import Loader from "@/app/loader";
-import { Input } from "@/shared/input";
-
+export const metadata: Metadata = {
+  title: "JSON-Schema Generator | Чат",
+};
 export default function Home() {
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center h-screen">
-      {isLoading
-        ? (
-            <div className="min-h-screen flex items-center justify-center m-auto">
-              <Loader />
-            </div>
-          )
-        : (
-            <div className="flex flex-col h-screen w-full justify-end mt-auto p-3">
-              <Input />
-            </div>
-          )}
-    </div>
+    <main className="flex gap-12 p-12 min-h-screen">
+      <SchemaDisplay />
+      <Separator />
+      <Chat />
+    </main>
   );
 }
