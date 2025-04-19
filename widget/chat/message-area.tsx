@@ -1,16 +1,18 @@
 "use client";
 
 import { Message } from "./message";
+import { useChat } from "@/entities/chat";
 
 export const MessageArea = () => {
+  const messages = useChat(state => state.messages);
+
   return (
     <div className="flex flex-col grow w-full gap-5">
-      <Message author="gpt">
-        Опишите ваш бизнес-процесс простыми словами — мы преобразуем его в структурированную схему.
-      </Message>
-      <Message author="user">
-        Представим, что тут расписан бизнес-процесс от пользователя блаблаблабла
-      </Message>
+      {
+        messages.map(msg => (
+          <Message key={msg.timestamp} author={msg.author}>{msg.text}</Message>
+        ))
+      }
     </div>
   );
 };
