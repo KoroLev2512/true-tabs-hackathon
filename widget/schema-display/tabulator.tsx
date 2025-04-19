@@ -17,7 +17,7 @@ const Tabulator: React.FC<TabulatorProps> = ({ tabs }) => {
 
   return (
     <div>
-      <div className="flex flex-col mt-[-20px] mb-2 text-var(--normal-button, rgba(115, 141, 184, 0.80)) text-2xl not-italic font-bold leading-[normal]">
+      <div className="flex flex-col mb-2 font-jetbrains-mono">
         {tabs.map(tab => (
           <button
             key={tab.version_id}
@@ -46,10 +46,12 @@ const VersionTabulator: React.FC = () => {
   return (
     <div>
       <div
-        className="flex justify-center w-full items-center gap-5 cursor-pointer my-8"
+        className="flex justify-center w-full items-center gap-5 cursor-pointer my-4"
         onClick={() => setTabulatorVisible(!isTabulatorVisible)}
       >
-        <span className="text-2xl select-none">Версия 1.0</span>
+        <span className="select-none font-jetbrains-mono text-var(--normal-button, rgba(115, 141, 184, 0.80)) text-2xl not-italic font-bold leading-[normal]">
+          Версия 1.0
+        </span>
         <ArrowDownIcon />
       </div>
       {isTabulatorVisible && <Tabulator tabs={tabs} />}
