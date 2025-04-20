@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { ArrowDownIcon } from "@/shared/icons/arrow-down-icon";
+import { ArrowDownIcon } from "@/shared/icons";
+import { cn } from "@/shared/utils";
 
 interface Tab {
   version: string
@@ -16,14 +17,14 @@ const Tabulator: React.FC<TabulatorProps> = ({ tabs }) => {
   const [activeTab, setActiveTab] = useState(tabs[0].version_id);
 
   return (
-    <div>
-      <div className="flex flex-col mb-2 font-jetbrains-mono">
+    <div className="absolute z-50 w-full top-24 flex justify-center">
+      <div className="flex flex-col w-48 rounded-lg mb-2 font-jetbrains-mono bg-[#1C1F24]">
         {tabs.map(tab => (
           <button
             key={tab.version_id}
-            className={`px-4 py-2 cursor-pointer select-none ${
-              activeTab === tab.version_id ? "text-blue-500" : "text-gray-500"
-            }`}
+            className={cn("px-4 py-2 cursor-pointer select-none",
+              activeTab === tab.version_id ? "text-blue-500" : "text-gray-500",
+            )}
             onClick={() => setActiveTab(tab.version_id)}
           >
             {tab.version}
@@ -49,12 +50,14 @@ const VersionTabulator: React.FC = () => {
         className="flex justify-center w-full items-center gap-5 cursor-pointer my-4"
         onClick={() => setTabulatorVisible(!isTabulatorVisible)}
       >
-        <span className="select-none font-jetbrains-mono text-var(--normal-button, rgba(115, 141, 184, 0.80)) text-2xl not-italic font-bold leading-[normal]">
+        <span
+          className="select-none font-jetbrains-mono text-var(--normal-button, rgba(115, 141, 184, 0.80)) text-2xl not-italic font-bold leading-[normal]"
+        >
           Версия 1.0
         </span>
         <ArrowDownIcon />
+        {isTabulatorVisible && <Tabulator tabs={tabs} />}
       </div>
-      {isTabulatorVisible && <Tabulator tabs={tabs} />}
     </div>
   );
 };

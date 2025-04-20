@@ -1,4 +1,6 @@
-export const ArrowDownIcon = () => {
+import type { IconProps } from "./types";
+
+export const ArrowDownIcon = (props: IconProps) => {
   return (
     <svg
       width="24"
@@ -6,6 +8,7 @@ export const ArrowDownIcon = () => {
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      {...props}
     >
       <path
         fillRule="evenodd"
