@@ -23,7 +23,7 @@ class ApiClient {
     return await response.json() as T;
   }
 
-  public async post<T extends JSONValue = JSONValue, P extends JSONValue = JSONValue>(url: ApiPath, body: P, opts?: Omit<RequestInit, "method" | "body">): Promise<T> {
+  public async post<T, P extends JSONValue = JSONValue>(url: ApiPath, body: P, opts?: Omit<RequestInit, "method" | "body">): Promise<T> {
     const response = await fetch(`${this.domain}${url}`, {
       method: "POST",
       body: JSON.stringify(body),
