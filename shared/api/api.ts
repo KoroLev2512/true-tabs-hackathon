@@ -1,11 +1,7 @@
-class ApiError extends Error {
+import type { JSONValue } from "@/shared/utils";
+import { ApiError } from "@/shared/api/api-error";
 
-
-
-  constructor(message?: string) {
-    super(message);
-  }
-}
+type ApiPath = `/${string}`;
 
 class ApiClient {
   private readonly domain: string;
@@ -14,11 +10,32 @@ class ApiClient {
     this.domain = domain ?? "";
   }
 
-  public async get<T>(url: string, opts: ): Promise<T> {
-    const response = await fetch()
+  public async get<T extends JSONValue = JSONValue>(url: ApiPath, opts?: Omit<RequestInit, "method">): Promise<T> {
+    const response = await fetch(`${this.domain}${url}`, {
+      method: "GET",
+      ...opts,
+    });
 
-    return
+    if (!response.ok) {
+      throw new ApiError(response.status, response.statusText);
+    }
+
+    return await response.json() as T;
   }
 
-  public async post<T>(): Promise<T>;
+  public async post<T, P extends JSONValue = JSONValue>(url: ApiPath, body: P, opts?: Omit<RequestInit, "method" | "body">): Promise<T> {
+    const response = await fetch(`${this.domain}${url}`, {
+      method: "POST",
+      body: JSON.stringify(body),
+      ...opts,
+    });
+
+    if (!response.ok) {
+      throw new ApiError(response.status, response.statusText);
+    }
+
+    return await response.json() as T;
+  }
 }
+
+export const api = new ApiClient();

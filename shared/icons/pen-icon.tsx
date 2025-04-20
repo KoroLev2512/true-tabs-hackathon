@@ -1,10 +1,8 @@
 "use client";
 
-import type { HTMLAttributes } from "react";
+import type { IconProps } from "./types";
 
-export type PenIconProps = HTMLAttributes<SVGSVGElement>;
-
-export const PenIcon = ({ ...props }: PenIconProps) => {
+export const PenIcon = ({ ...props }: IconProps) => {
   return (
     <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
       <path

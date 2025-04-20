@@ -1,18 +1,17 @@
-import { Chat } from "@/widget/chat";
-import { SchemaDisplay } from "@/widget/schema-display";
-import { Separator } from "@/shared/ui/separator";
-import type { Metadata } from "next";
+"use client";
 
-export const metadata: Metadata = {
-  title: "JSON-Schema Generator | Чат",
-};
+import { Button } from "@/shared/ui/button";
+import { useRouter } from "next/navigation";
 
-export default function Home() {
+// export const metadata: Metadata = {
+//   title: "JSON-Schema Generator",
+// };
+export default function Page() {
+  const router = useRouter();
   return (
-    <main className="flex gap-12 p-12 min-h-screen">
-      <SchemaDisplay />
-      <Separator />
-      <Chat />
+    <main className="flex items-center justify-center gap-12 p-12 min-h-screen">
+      Мы переехали
+      <Button onClick={() => router.push("/chat/0")}>Чат</Button>
     </main>
   );
 }

@@ -1,0 +1,48 @@
+import { createStore } from "zustand";
+import { api } from "@/shared/api";
+import type { ChatProps, ChatState, Message } from "./types";
+
+export const createChatStore = (initProps: ChatProps) => {
+  return createStore<ChatState>()((set, get) => ({
+    ...initProps,
+    sendMessage: async (msg: string) => {
+      const newMessage: Message = {
+        text: msg,
+        author: "user",
+        timestamp: Date.now(),
+      };
+      set(state => ({
+        messages: state.messages.concat([newMessage]),
+      }));
+      try {
+        const response = await api.post<Message[]>("/aboba", { msg });
+
+        set(() => ({
+          messages: response,
+        }));
+      }
+      catch (err) {
+        const errorMessage = err instanceof Error ? err.message : "Что-то пошло не так :(";
+        set(state => ({
+          messages: state.messages.concat([{
+            text: `Упс... Произошла ошибка (${errorMessage})`,
+            author: "gpt",
+            timestamp: Date.now(),
+          }]),
+        }));
+        // throw new Error("No messages found!");
+      }
+      return get().messages.at(-1) as Message;
+    },
+    name: "Новый чат",
+    messages: [{
+      text: "Опишите ваш бизнес-процесс простыми словами — мы преобразуем его в структурированную схему.",
+      timestamp: Date.now(),
+      author: "gpt",
+    }],
+    schemas: [],
+    currentSchema: null,
+  }));
+};
+
+export type ChatStore = ReturnType<typeof createChatStore>;
