@@ -1,6 +1,6 @@
 import { createStore } from "zustand";
 import type { ChatProps, ChatState, Message } from "./types";
-import { getSchema } from "@/app/actions";
+import { getFirstSchema } from "@/app/actions";
 
 export const createChatStore = (initProps: ChatProps) => {
   return createStore<ChatState>()((set, get) => ({
@@ -15,7 +15,10 @@ export const createChatStore = (initProps: ChatProps) => {
         messages: state.messages.concat([newMessage]),
       }));
       try {
-        const response = await getSchema(msg);
+        let response: string;
+        if (get().messages.length <= 2) {
+          response = await getFirstSchema(msg);
+        }
         set(state => ({
           messages: state.messages.concat([{
             timestamp: Date.now(),

@@ -1,7 +1,7 @@
 import type { JSONValue } from "@/shared/utils";
 import { ApiError } from "@/shared/api/api-error";
 
-type ApiPath = `/${string}`;
+type ApiPath = string;
 
 class ApiClient {
   private readonly domain: string;

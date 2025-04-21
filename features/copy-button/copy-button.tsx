@@ -4,7 +4,7 @@ import { useChat } from "@/entities/chat";
 import { CopyDocumentIcon } from "@/shared/icons";
 
 export const CopyButton = () => {
-  const schema = useChat(chat => chat.currentSchema?.currentVersion.data ?? "");
+  const schema = useChat(chat => chat.currentSchema?.data ?? "");
 
   if (!schema) return <></>;
   return (

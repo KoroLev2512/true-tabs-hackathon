@@ -17,7 +17,7 @@ const MonacoEditor = dynamic(
 );
 
 export const SchemaDisplay = () => {
-  const schema = useChat(chat => chat.currentSchema?.currentVersion.data ?? "");
+  const schema = useChat(chat => chat.currentSchema?.data ?? "");
 
   const handleBeforeMount = (monaco: Monaco) => {
     defineCustomTheme(monaco);
