@@ -2,13 +2,15 @@ import { ChatTitle } from "./chat-title";
 import { BackButton } from "@/features/back-button";
 import { MessageArea } from "@/features/message-area";
 import { SendMessageForm } from "@/features/send-message-form";
+import { AccountButton } from "@/features/account-button";
 
 export const Chat = () => {
   return (
     <div className="flex flex-col items-center gap-4 w-1/2">
-      <div className="flex relative justify-center w-full">
+      <div className="flex justify-between w-full">
+        <BackButton className="text-[#738DB8] opacity-80" />
         <ChatTitle />
-        <BackButton className="absolute left-0 text-[#738DB8] opacity-80" />
+        <AccountButton />
       </div>
       <MessageArea />
       <SendMessageForm

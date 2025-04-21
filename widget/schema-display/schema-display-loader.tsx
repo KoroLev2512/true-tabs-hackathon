@@ -3,7 +3,7 @@
 export const SchemaDisplayLoader = () => {
   return (
     <div>
-      ...ЗОГРУЗКО!
+      Загрузка...
     </div>
   );
 };

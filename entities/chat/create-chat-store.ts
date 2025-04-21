@@ -1,6 +1,6 @@
 import { createStore } from "zustand";
-import { api } from "@/shared/api";
 import type { ChatProps, ChatState, Message } from "./types";
+import { getSchema } from "@/app/actions";
 
 export const createChatStore = (initProps: ChatProps) => {
   return createStore<ChatState>()((set, get) => ({
@@ -15,10 +15,16 @@ export const createChatStore = (initProps: ChatProps) => {
         messages: state.messages.concat([newMessage]),
       }));
       try {
-        const response = await api.post<Message[]>("/aboba", { msg });
-
-        set(() => ({
-          messages: response,
+        const response = await getSchema(msg);
+        set(state => ({
+          messages: state.messages.concat([{
+            timestamp: Date.now(),
+            text: "Сгенерировал JSON-схему по вашему запросу",
+            author: "gpt",
+          }]),
+          currentSchema: {
+            data: response,
+          },
         }));
       }
       catch (err) {

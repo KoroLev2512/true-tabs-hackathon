@@ -16,10 +16,7 @@ export interface JSONSchemaVersion {
 }
 
 export interface JSONSchema {
-  id: number
-  chatID: number
-  name: string
-  currentVersion: JSONSchemaVersion
+  data: string
 }
 
 export interface ChatState extends ChatProps {

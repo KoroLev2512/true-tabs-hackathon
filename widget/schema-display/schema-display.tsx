@@ -2,11 +2,11 @@
 
 import dynamic from "next/dynamic";
 import { SchemaDisplayLoader } from "./schema-display-loader";
-import { useState } from "react";
 import type { Monaco } from "@monaco-editor/react";
 import { defineCustomTheme } from "./define-custom-theme";
-import { PLACEHOLDER } from "./placeholder";
 import VersionTabulator from "@/widget/schema-display/tabulator";
+import { useChat } from "@/entities/chat";
+import { CopyButton } from "@/features/copy-button/copy-button";
 
 const MonacoEditor = dynamic(
   () => import("@monaco-editor/react"),
@@ -17,10 +17,7 @@ const MonacoEditor = dynamic(
 );
 
 export const SchemaDisplay = () => {
-  const [schema, setSchema] = useState<string>(PLACEHOLDER);
-  const handleEditorChange = (value: string | undefined) => {
-    setSchema(value || "");
-  };
+  const schema = useChat(chat => chat.currentSchema?.currentVersion.data ?? "");
 
   const handleBeforeMount = (monaco: Monaco) => {
     defineCustomTheme(monaco);
@@ -46,6 +43,9 @@ export const SchemaDisplay = () => {
             automaticLayout: true,
           }}
         />
+      </div>
+      <div className="flex gap-8 justify-end">
+        <CopyButton />
       </div>
     </div>
   );
