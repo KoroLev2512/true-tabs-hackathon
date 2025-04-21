@@ -27,7 +27,7 @@ export const SendMessageForm = ({ className, ...props }: SendMessageFormProps) =
         <textarea
           className="grow placeholder:text-white/20 text-[#F8F8F8] resize-none focus-visible:outline-none"
           value={message}
-          onChange={event => setMessage(event.target.value.trim())}
+          onChange={event => setMessage(event.target.value)}
           {...props}
         />
         <Button

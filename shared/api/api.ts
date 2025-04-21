@@ -38,4 +38,4 @@ class ApiClient {
   }
 }
 
-export const api = new ApiClient();
+export const api = new ApiClient(process.env.API ?? "");
