@@ -20,7 +20,8 @@ export const createChatStore = (initProps: ChatProps) => {
           response = await getFirstSchema(msg);
         }
         else {
-          response = await getSchema(msg);
+          const schema: string = get().currentSchema?.data ?? "";
+          response = await getSchema(msg, schema);
         }
         set(state => ({
           messages: state.messages.concat([{

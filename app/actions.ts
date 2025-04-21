@@ -6,6 +6,9 @@ export const getFirstSchema = async (prompt: string) => {
   return api.post<string>("/schemas/workflows/generate", prompt);
 };
 
-export const getSchema = async (prompt: string) => {
-  return api.post<string>("/schemas/workflows/edit", prompt);
+export const getSchema = async (prompt: string, schema: string) => {
+  return api.post<string>("/schemas/workflows/edit", {
+    current: prompt,
+    update: schema,
+  });
 };
