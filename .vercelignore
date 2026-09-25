@@ -1,0 +1,5 @@
+# Vercel deployment ignore
+presentation.mov
+*.pptx
+*.mov
+.idea
