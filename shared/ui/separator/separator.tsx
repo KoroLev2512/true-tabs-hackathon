@@ -10,7 +10,8 @@ export interface SeparatorProps extends HTMLAttributes<HTMLDivElement> {
 export const Separator = ({ orientation = "vertical", ...props }: SeparatorProps) => {
   return (
     <div
-      className={cn("bg-white shrink-0 opacity-40", orientation === "vertical" ? "w-[1px] grow" : "grow h-[1px]")}
+      className={cn("bg-white shrink-0 opacity-20", orientation === "vertical" ? "w-[1px] h-full" : "w-full h-[1px]")}
+      {...props}
     />
   );
 };

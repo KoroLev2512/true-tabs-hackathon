@@ -8,8 +8,8 @@ export const AccountButton = () => {
   const router = useRouter();
   return (
     <Popover.Root>
-      <Popover.Trigger>
-        <UserIcon className="text-[#738DB8] hover:text-[#C0D3F3]" />
+      <Popover.Trigger className="cursor-pointer outline-none flex items-center justify-center">
+        <UserIcon className="text-[#738DB8] hover:text-[#C0D3F3] cursor-pointer transition-colors duration-200" />
       </Popover.Trigger>
       <Popover.Portal>
         <Popover.Content

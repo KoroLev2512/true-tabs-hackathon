@@ -1,10 +1,31 @@
 import { createStore } from "zustand";
-import type { ChatProps, ChatState, Message } from "./types";
+import type { ChatProps, ChatState, JSONSchemaVersion, Message } from "./types";
 import { getFirstSchema, getSchema } from "@/app/actions";
 
 export const createChatStore = (initProps: ChatProps) => {
   return createStore<ChatState>()((set, get) => ({
     ...initProps,
+    name: "Новый чат",
+    messages: [{
+      text: "Опишите ваш бизнес-процесс простыми словами — мы преобразуем его в структурированную схему.",
+      timestamp: Date.now(),
+      author: "gpt",
+    }],
+    schemas: [],
+    currentVersionId: null,
+    currentSchema: null,
+    isLoading: false,
+
+    setVersion: (versionId: number) => {
+      const target = get().schemas.find(s => s.id === versionId);
+      if (target) {
+        set({
+          currentVersionId: versionId,
+          currentSchema: target,
+        });
+      }
+    },
+
     sendMessage: async (msg: string) => {
       const newMessage: Message = {
         text: msg,
@@ -13,25 +34,37 @@ export const createChatStore = (initProps: ChatProps) => {
       };
       set(state => ({
         messages: state.messages.concat([newMessage]),
+        isLoading: true,
       }));
       try {
         let response: string;
-        if (get().messages.length <= 2) {
+        if (get().schemas.length === 0) {
           response = await getFirstSchema(msg);
         }
         else {
-          const schema: string = get().currentSchema?.data ?? "";
-          response = await getSchema(msg, schema);
+          const currentData = get().currentSchema?.data ?? "";
+          response = await getSchema(msg, currentData);
         }
+
+        const newId = get().schemas.length;
+        const newVersion: JSONSchemaVersion = {
+          id: newId,
+          version: `v${newId + 1}.0`,
+          name: `Версия ${newId + 1}.0`,
+          data: response,
+          timestamp: Date.now(),
+        };
+
         set(state => ({
           messages: state.messages.concat([{
             timestamp: Date.now(),
             text: "Сгенерировал JSON-схему по вашему запросу",
             author: "gpt",
           }]),
-          currentSchema: {
-            data: response,
-          },
+          schemas: state.schemas.concat([newVersion]),
+          currentSchema: newVersion,
+          currentVersionId: newId,
+          isLoading: false,
         }));
       }
       catch (err) {
@@ -42,20 +75,13 @@ export const createChatStore = (initProps: ChatProps) => {
             author: "gpt",
             timestamp: Date.now(),
           }]),
+          isLoading: false,
         }));
-        // throw new Error("No messages found!");
       }
       return get().messages.at(-1) as Message;
     },
-    name: "Новый чат",
-    messages: [{
-      text: "Опишите ваш бизнес-процесс простыми словами — мы преобразуем его в структурированную схему.",
-      timestamp: Date.now(),
-      author: "gpt",
-    }],
-    schemas: [],
-    currentSchema: null,
   }));
 };
 
 export type ChatStore = ReturnType<typeof createChatStore>;
+

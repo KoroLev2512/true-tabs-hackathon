@@ -1,0 +1,246 @@
+{
+    "headers": {},
+    "body": {
+        "body": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "complex",
+            "name": "ordersWorkflow",
+            "tenantId": "default",
+            "version": 1,
+            "description": "Workflow for handling new orders",
+            "compiled": {
+                "start": "validateRequest",
+                "activities": [
+                    {
+                        "id": "validateRequest",
+                        "type": "transform",
+                        "transition": "sendToKafka",
+                        "transform": {
+                            "inputValidateSchema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "items": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "customer": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "id",
+                                    "items",
+                                    "customer"
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "id": "sendToKafka",
+                        "type": "workflow_call",
+                        "transition": "respond",
+                        "workflowCall": {
+                            "type": "kafka_producer",
+                            "topic": "orders.new",
+                            "key": "order_id",
+                            "value": "order_data"
+                        }
+                    },
+                    {
+                        "id": "respond",
+                        "type": "inject",
+                        "transition": null,
+                        "injectData": {
+                            "outputValidateSchema": {
+                                "type": "object",
+                                "properties": {
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "ok",
+                                            "error"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "status"
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            "definitions": {
+                "restCallConfig": {
+                    "type": "object",
+                    "properties": {
+                        "restCallTemplateDef": {
+                            "type": "object",
+                            "properties": {
+                                "method": {
+                                    "type": "string",
+                                    "enum": [
+                                        "GET",
+                                        "POST",
+                                        "PUT",
+                                        "DELETE"
+                                    ]
+                                },
+                                "uri": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "method",
+                                "uri"
+                            ]
+                        },
+                        "inputValidateSchema": {
+                            "$ref": "#/definitions/inputValidateSchema"
+                        },
+                        "outputValidateSchema": {
+                            "$ref": "#/definitions/outputValidateSchema"
+                        }
+                    },
+                    "required": [
+                        "restCallTemplateDef"
+                    ]
+                },
+                "kafkaConsumerConfig": {
+                    "type": "object",
+                    "properties": {
+                        "bootstrapServers": {
+                            "type": "string"
+                        },
+                        "topic": {
+                            "type": "string"
+                        },
+                        "groupId": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "bootstrapServers",
+                        "topic",
+                        "groupId"
+                    ]
+                },
+                "kafkaProducerConfig": {
+                    "type": "object",
+                    "properties": {
+                        "bootstrapServers": {
+                            "type": "string"
+                        },
+                        "topic": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "bootstrapServers",
+                        "topic"
+                    ]
+                },
+                "inputValidateSchema": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string"
+                        },
+                        "items": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "customer": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "id",
+                        "items",
+                        "customer"
+                    ]
+                },
+                "outputValidateSchema": {
+                    "type": "object",
+                    "properties": {
+                        "status": {
+                            "type": "string",
+                            "enum": [
+                                "ok",
+                                "error"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "status"
+                    ]
+                },
+                "WorkflowCall": {
+                    "type": "object",
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "enum": [
+                                "kafka_producer",
+                                "kafka_consumer"
+                            ]
+                        },
+                        "topic": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "type",
+                        "topic"
+                    ]
+                },
+                "injectData": {
+                    "type": "object",
+                    "properties": {
+                        "outputValidateSchema": {
+                            "$ref": "#/definitions/outputValidateSchema"
+                        }
+                    }
+                },
+                "dataConditions": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "condition": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "defaultCondition": {
+                    "type": "object",
+                    "properties": {
+                        "transition": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "transformConfig": {
+                    "type": "object",
+                    "properties": {
+                        "inputValidateSchema": {
+                            "$ref": "#/definitions/inputValidateSchema"
+                        }
+                    }
+                }
+            }
+        },
+        "error": false,
+        "error_text": null
+    },
+    "status_code": "OK",
+    "status_code_value": 200
+}

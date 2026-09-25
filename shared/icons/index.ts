@@ -2,3 +2,8 @@ export * from "./arrow-up-icon";
 export * from "./arrow-down-icon";
 export * from "./user-icon";
 export * from "./copy-document-icon";
+export * from "./download-icon";
+export * from "./help-icon";
+export * from "./chat-bubble-icon";
+export * from "./code-brackets-icon";
+export * from "./git-branch-icon";

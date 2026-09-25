@@ -1,36 +1,99 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Schema Builder — True Tech Hackathon
 
-## Getting Started
+**AI Schema Builder** — интеллектуальное веб-приложение для автоматической генерации, валидации, интерактивного редактирования и версионирования сложных JSON-схем бизнес-процессов (Workflow JSON Schemas) на основе диалога с искусственным интеллектом.
 
-First, run the development server:
+Решение разработано командой **«Биржа 609»** в рамках хакатона True Tech.
 
+---
+
+## 👥 Команда «Биржа 609»
+
+* **Юрий Королёв** — Капитан команды, Frontend-разработчик
+* **Иван Шибаев** — Frontend-разработчик
+* **Сергей Дорохин** — Backend-разработчик
+* **Мария Пыркина** — UX/UI-дизайнер
+
+---
+
+## 📁 Материалы проекта
+
+В корне репозитория прикреплены ключевые материалы:
+* 🎬 **`presentation.mov`** — 40-секундная видеодемонстрация работы продукта (ввод бизнес-требований, асинхронная генерация схемы в реальном времени, подсветка и скроллинг в Monaco Editor).
+* 📑 **`Презентация продукта.pptx`** — презентация решения команды «Биржа 609» (проблема, архитектура, безопасность, стек, демонстрация и состав команды).
+* 📋 **`out.json`** — эталонный ответ API бэкенда с сгенерированной схемой оркестрации бизнес-процесса обработки заказов (`ordersWorkflow` с активностями Kafka и валидацией).
+
+---
+
+## 🚀 Основные возможности продукта
+
+1. 💬 **Интеллектуальный диалог с ИИ**:
+   * Формулирование бизнес-логики и интеграций естественным языком.
+   * Итеративное уточнение, добавление новых полей и шагов последующими сообщениями.
+   * Анимированная индикация процесса генерации схемы.
+
+2. ⚡ **Monaco Editor (VS Code Engine)**:
+   * Профессиональный редактор с подсветкой синтаксиса JSON, сворачиванием блоков и валидацией схемы по стандарту `JSON Schema Draft-07`.
+   * Полноэкранный адаптивный интерфейс, строго оптимизированный под `100vh` без лишних прокруток.
+
+3. 📑 **Табулятор и версионирование схем**:
+   * Каждая итерация диалога фиксируется как новая версия (`v1.0`, `v2.0` и т.д.).
+   * Мгновенное переключение между историческими версиями схемы через выпадающий табулятор.
+
+4. 💾 **Экспорт и интеграция**:
+   * Скачивание готовой схемы отдельным файлом `.json` на устройство.
+   * Копирование схемы в буфер обмена в один клик с визуальной индикацией.
+
+5. 🧭 **Интерактивный онбординг-тур**:
+   * Пошаговое визуальное обучение в стилистике бренда МТС Red (`#E30611`).
+   * Динамический спотлайт (чат, строка ввода, редактор, версионирование, экспорт).
+   * Возможность перезапустить обучение в любой момент кнопкой «Обучение» в шапке.
+
+6. 🛡️ **Отказоустойчивость (Autonomous Demo Mode)**:
+   * Если внешний сервер API недоступен или переменная `API` не задана, автоматически работает встроенный генератор схем, выдающий реальную структуру True Tech Workflow (`out.json`), позволяя оценить весь функционал без развёртывания бэкенда.
+
+---
+
+## 🏗 Архитектура и технологии
+
+### Frontend:
+* **Фреймворк:** [Next.js 15 (App Router)](https://nextjs.org) + [React 19](https://react.dev)
+* **Стилизация:** [Tailwind CSS v4](https://tailwindcss.com) + палитра бренда МТС Red (`#E30611`)
+* **Редактор кода:** [`@monaco-editor/react`](https://github.com/suren-atoyan/monaco-react)
+* **Стейт-менеджмент:** [Zustand](https://github.com/pmndrs/zustand)
+* **Методология:** Feature-Sliced Design (`app`, `widget`, `features`, `entities`, `shared`)
+
+### Backend & AI:
+* **Модель:** `LLaMA 3.3 70B Instruct` — точная интерпретация бизнес-требований и генерация структурированных схем.
+* **Безопасность:** `Keycloak + OpenID Connect / OAuth2` — корпоративная авторизация и защита данных.
+* **Архитектура:** Микросервисная, асинхронная обработка очередей.
+* **Интеграции схем:** Поддержка Apache Kafka (Producer / Consumer), REST API шаблонов и схем валидации входных/выходных контрактов.
+
+---
+
+## ⚡ Быстрый старт
+
+### 1. Клонирование и установка зависимостей
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/KoroLev2512/true-tabs-hackathon.git
+cd true-tabs-hackathon
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Настройка переменных окружения (опционально)
+Создайте `.env.local` в корне проекта при наличии бэкенда:
+```env
+API=http://localhost:8000
+```
+> *Если переменная не указана, приложение запустится в автономном демо-режиме с полной поддержкой версионирования и генерации.*
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Запуск в режиме разработки
+```bash
+npm run dev
+```
+Приложение откроется по адресу: [http://localhost:3000](http://localhost:3000)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 4. Проверка качества кода и сборка
+```bash
+npm run lint
+npm run build
+```

@@ -11,8 +11,10 @@ export interface Message {
 
 export interface JSONSchemaVersion {
   id: number
-  name: string
+  version: string
+  name?: string
   data: string
+  timestamp: number
 }
 
 export interface JSONSchema {
@@ -23,6 +25,9 @@ export interface ChatState extends ChatProps {
   sendMessage: (message: string) => Promise<Message>
   name: string
   messages: Array<Message>
-  schemas: Array<JSONSchema>
-  currentSchema: JSONSchema | null
+  schemas: Array<JSONSchemaVersion>
+  currentVersionId: number | null
+  currentSchema: JSONSchemaVersion | null
+  setVersion: (versionId: number) => void
+  isLoading: boolean
 }
